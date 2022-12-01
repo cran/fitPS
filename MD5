@@ -1,0 +1,14 @@
+4a4092cdc6acb2e98b0dbb929ab2fa31 *DESCRIPTION
+c4c684aa71dc07d455876a3f0f690822 *NAMESPACE
+311c35c19879e3d91e688cb1e696a041 *R/fitDist.R
+fcffc3530e6665f1108fdeb1cd4c3230 *R/plot.psFit.R
+3ca15b317e3a567e0deabc1aa351602f *R/print.psFit.R
+56905dbfb409b82071a9b1718f975de3 *R/probfun.R
+6f387aece178957330aae52f3a5fb7a8 *R/readData.R
+6c69974676c13dc2885c0e7ca9ed5473 *inst/extdata/p.xlsx
+5de4677409738b68a5c7875265322470 *inst/extdata/s.xlsx
+e79b4ea99843db1835825a979002a71a *man/fitDist.Rd
+0285839b8c580de7054ea71b6b8df38d *man/plot.psFit.Rd
+2e705c954ef366beb253c0801481a094 *man/print.psFit.Rd
+56837ad38645a09c6f9fcee03df167e9 *man/probfun.Rd
+3c49d777ba35879c0ef6a70ec02f54e3 *man/readData.Rd
