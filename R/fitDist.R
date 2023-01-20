@@ -19,9 +19,10 @@
 #' @details The function returns an object of class \code{psFit} which is a \code{list}
 #' contains four elements:
 #' \itemize{
-#' \item{\code{psData}}{ - an object of class \code{psData}--see \code{\link{readData}},}
-#' \item{\code{fit}}{ - the fitted object from \code{\link[stats]{nlminb}},}
-#' \item{\code{shape}}{ - the maximum likelihood estimate of the shape parameter,}
+#' \item{\code{psData}}{ -- an object of class \code{psData}--see \code{\link{readData}},}
+#' \item{\code{fit}}{ -- the fitted object from \code{\link[stats]{nlminb}},}
+#' \item{\code{shape}}{ -- the maximum likelihood estimate of the shape parameter,}
+#' \item{\code{varshape}}{ - the maximum likelihood estimate of the shape parameter,}
 #' \item{\code{fitted}}{ - a named \code{vector} containing the first \code{nterms of
 #' the fitted distribution.}}
 #' }.
@@ -59,11 +60,15 @@
 #' fit = fitDist(p)
 #' fit
 fitDist = function(x, nterms = 10,
-                   start = runif(1),
+                   start = 1 + runif(1),
                    ...){
   nvals = 1:nterms
   if(!is(x, "psData")){
     stop("x must be an object of class psData")
+  }
+
+  if(start <= 1){
+    stop("The zeta function is undefined for shape = 1. Choose a start value > 1.")
   }
 
   obsData = if(x$type == 'P'){ ## the main difference is that the values need 1 added
@@ -78,9 +83,15 @@ fitDist = function(x, nterms = 10,
 
   fit = nlminb(start = start,
                objective = logLik,
-               lower = 0)
+               lower = 1)
 
-  fitted = VGAM::dzeta(nvals, shape = fit$par)
+  shape = fit$par
+  N = length(nvals)
+  var.shape = -VGAM::zeta(shape)^2/(N * (VGAM::zeta(shape, 1)^2 -
+                                        VGAM::zeta(shape) * VGAM::zeta(shape, 2)))
+
+
+  fitted = VGAM::dzeta(nvals, shape = shape)
   names(fitted) = if(x$type == 'P'){
     paste0("P", nvals - 1)
   }else{
@@ -90,7 +101,8 @@ fitDist = function(x, nterms = 10,
   result = list(
     psData = x,
     fit = fit,
-    shape = fit$par,
+    shape = shape,
+    var.shape = var.shape,
     fitted = fitted
   )
 
