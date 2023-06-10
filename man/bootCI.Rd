@@ -14,6 +14,7 @@ bootCI(x, ...)
   level = 0.95,
   B = 2000,
   model = c("zeta", "zi.zeta"),
+  returnBootValues = FALSE,
   silent = FALSE,
   plot = FALSE,
   parallel = TRUE,
@@ -24,7 +25,7 @@ bootCI(x, ...)
 
 \method{bootCI}{psData}(x, ...)
 
-\method{bootCI}{psFit}(x, ...)
+\method{bootCI}{psFit}(x, model = ifelse(!x$zeroInflated, "zeta", "zi.zeta"), ...)
 }
 \arguments{
 \item{x}{a object of class \code{psFit}---see \code{\link{readData}} for more
@@ -32,15 +33,19 @@ details.}
 
 \item{...}{other arguments.}
 
-\item{level}{the confidence level required---restricted to [0.75, 1). This
-may be a vector, in which case multiple intervals, or confidence regions
-will be returned.}
+\item{level}{the confidence level required---restricted to [0.75, 1). This may
+be a vector, in which case multiple intervals, or confidence regions will be
+returned.}
 
 \item{B}{the number of bootstrap samples to take.}
 
 \item{model}{which model to fit to the data, either \code{"zeta"} or
 \code{"zi.zeta"}. Maybe abbreviated to \code{"z"} and \code{"zi"}. Default
 is \code{"zeta"}.}
+
+\item{returnBootValues}{if \code{TRUE} then the \code{vector} (or
+\code{data.frame}) of bootstrapped values is returned. This can be useful
+for debugging or understanding the results. Default is \code{FALSE}.}
 
 \item{silent}{if \code{TRUE}, then no output will be displayed whilst the
 bootstrapping is being undertaken. \code{plot} if \code{TRUE} then the
@@ -63,30 +68,42 @@ function that affect the progress bars. Ignored if \code{progressBar =
 FALSE}.}
 }
 \value{
-If \code{model == "zeta"}, then either a \code{vector} or a
-  \code{data.frame} with elements/columns named \code{"lower"} and
-  \code{"upper"} representing the lower and upper bounds of the confidence
-  interval(s). Multiple bounds are returned in a \code{data.frame} when
-  \code{level} has more than one value. If \code{model == "zi.zeta"}, then a
-  list with length equal to the length of \code{level} is returned. The name
-  of each element in the list is the level with % attached. For example if
-  \code{level == 0.95}, then the list has a single element named
-  \code{"95\%"}. Each element of the list consists of a \code{list} with
-  elements named \code{pi} and \code{shape} which specify the coordinates of
-  the contour for that level. There is a third element named \code{level}
-  which gives the height of the kernel density estimate at that contour.
+If \code{returnBootVals == TRUE} then the results are returned in a
+ list with elements named \code{ci} and \code{bootVals} for the zeta model
+ and \code{confRegion} and \code{bootVals} for the zero-inflated zeta model.
+ The structure of \code{ci} and \code{confregion} is described below. If
+ \code{model == "zeta"}, then either a \code{vector} or a \code{data.frame}
+ with elements/columns named \code{"lower"} and \code{"upper"} representing
+ the lower and upper bounds of the confidence interval(s). Multiple bounds
+ are returned in a \code{data.frame} when \code{level} has more than one
+ value. If \code{model == "zi.zeta"}, then a list with length equal to the
+ length of \code{level} is returned. The name of each element in the list is
+ the level with % attached. For example if \code{level == 0.95}, then the
+ list has a single element named \code{"95\%"}. It is possible for there to
+ be multiple contours for the confidence region for a given \code{level}. If
+ there is only one contour for each value of \code{level}, then each element
+ of the list consists of a \code{list} with elements named \code{pi} and
+ \code{shape} which specify the coordinates of the contour(s) for that level.
+ There is a third element named \code{level} which gives the height of the
+ kernel density estimate at that contour. If there are multiple contours for
+ a given value of \code{level} then each list element is a list of lists with
+ the structure given above (\code{level}, \code{pi}, and \code{shape}). NOTE:
+ it is quite possible that there are multiple contours for a given height. If
+ you want a way of thinking about this consider a mountain range with two
+ mountains of equal height. If you draw the contours for (almost) any
+ elevation, then you would expect to capture a region from each mountain.
 }
 \description{
 Use boostrapping to generate confidence intervals, or confidence regions in
 the case of the zero-inflated model.
 }
 \details{
-This function uses bootstrapping to compute a confidence interval
-  for the shape parameter in the case of the zeta model and a confidence
-  region in the case of the zero-inflated zeta model. A smoothed bootstrap
-  approach is taken rather than a simple percentile method. The kernel
-  density estimation is performed by the \code{ks} package using a smoothed
-  cross-validated bandwidth selection procedure.
+This function uses bootstrapping to compute a confidence interval for
+ the shape parameter in the case of the zeta model and a confidence region in
+ the case of the zero-inflated zeta model. A smoothed bootstrap approach is
+ taken rather than a simple percentile method. The kernel density estimation
+ is performed by the \code{ks} package using a smoothed cross-validated
+ bandwidth selection procedure.
 }
 \section{Methods (by class)}{
 \itemize{
@@ -105,6 +122,8 @@ confRegion = bootCI(roux, model = "zi.zeta", parallel = FALSE, plot = TRUE)
 
 ## This will not work unless you have the sp package installed
 ## Count how many of the points lie within the 95\% confidence region
-table(sp::point.in.polygon(fit$pi,fit$shape, confRegion$pi, confRegion$shape))
+lapply(confRegion, function(cr){
+  table(sp::point.in.polygon(fit$pi,fit$shape, cr$pi, cr$shape))
+. })
 }
 }

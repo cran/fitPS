@@ -363,7 +363,7 @@ survey—number of groups data</h1>
 
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">suppressPackageStartupMessages</span>({<span class="fu">library</span>(fitPS)}))</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">suppressWarnings</span>(<span class="fu">suppressPackageStartupMessages</span>({<span class="fu">library</span>(fitPS)}))</span></code></pre></div>
 <p>In this example we will learn how to use <code>fitPS</code> to fit a
 Zeta distribution to some data from a survey where the number of groups
 of glass found is recorded. The data in this example comes from <span class="citation">Roux et al. (2001)</span> who surveyed the footwear of
@@ -401,7 +401,7 @@ table below.</p>
 </table>
 <p>This data set is built into the package and can be accessed from the
 <code>Psurveys</code> object. That is, we can type:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>roux <span class="ot">=</span> Psurveys<span class="sc">$</span>roux</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>roux <span class="ot">=</span> Psurveys<span class="sc">$</span>roux</span></code></pre></div>
 <p>The data is stored as an object of class <code>psData</code>. This
 probably will not be of importance to most users. If you are interested
 in the details, then these can be found in the <strong>Value</strong>
@@ -423,26 +423,26 @@ observed in the survey),</li>
 these will be printed as well</li>
 </ul>
 <p>For example</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>roux</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Number of Groups</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   n    rn</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ---  ----</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   0   754</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   1     9</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   2     8</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   3     4</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   4     1</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Roux C, Kirk R, Benson S, Van Haren T, Petterd C (2001). &quot;Glass</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; particles in footwear of members of the public in south-eastern</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Australia-a survey.&quot; _Forensic Science International_, *116*(2),</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 149-156. doi:10.1016/S0379-0738(00)00355-8</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; &lt;https://doi.org/10.1016/S0379-0738%2800%2900355-8&gt;.</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>roux</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; Number of Groups</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt;   n    rn</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; ---  ----</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt;   0   754</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="co">#&gt;   1     9</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt;   2     8</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="co">#&gt;   3     4</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt;   4     1</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="co">#&gt; Roux C, Kirk R, Benson S, Van Haren T, Petterd C (2001). &quot;Glass</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; particles in footwear of members of the public in south-eastern</span></span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a><span class="co">#&gt; Australia-a survey.&quot; _Forensic Science International_, *116*(2),</span></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="co">#&gt; 149-156. doi:10.1016/S0379-0738(00)00355-8</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a><span class="co">#&gt; &lt;https://doi.org/10.1016/S0379-0738%2800%2900355-8&gt;.</span></span></code></pre></div>
 <p>It is very simple to fit a Zeta distribution to this data set. We do
 this using the <code>fitDist</code> function.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">=</span> <span class="fu">fitDist</span>(roux)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>fit <span class="ot">=</span> <span class="fu">fitDist</span>(roux)</span></code></pre></div>
 <p>The function returns an object of class <code>psFit</code>, the
 details of which can be found in the help page for <code>fitDist</code>.
 There are both S3 <code>print</code> and S3 <code>plot</code> methods
@@ -461,19 +461,19 @@ probabilities from the model by default. The number of probabilities
 shown can be altered by changing the value of <code>nterms</code>. We
 will do this here to only display the first six probabilities (from
 <span class="math inline">\(P_0\)</span> to <span class="math inline">\(P_5\)</span>).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fit, <span class="at">nterms =</span> <span class="dv">6</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The estimated shape parameter is  4.9544 </span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The standard error of shape parameter is  0.2366 </span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span><span class="al">NOTE</span><span class="co">: The shape parameter is reported so that it is consistent with Coulson et al.</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; However, the value returned is actually s&#39; = shape - 1 to be consistent with the </span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; VGAM parameterisation, which is used for computation. This has flow on effects, for</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; example in confInt. This will be changed at some point.</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; ------</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; The first  6 fitted values are:</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;           P0           P1           P2           P3           P4           P5 </span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 0.9631546669 0.0310644678 0.0041670821 0.0010019171 0.0003316637 0.0001344002</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">print</span>(fit, <span class="at">nterms =</span> <span class="dv">6</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; The estimated shape parameter is 4.9544 </span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; The standard error of shape parameter is 0.2366 </span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; ------</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt; </span><span class="al">NOTE</span><span class="co">: The shape parameter is reported so that it is consistent with Coulson et al.</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; However, the value returned is actually s&#39; = shape - 1 to be consistent with the </span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; VGAM parameterisation, which is used for computation. This has flow on effects, for</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt; example in confInt. This will be changed at some point.</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt; ------</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt; The first  6 fitted values are:</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt;           P0           P1           P2           P3           P4           P5 </span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; 0.9631546669 0.0310644678 0.0041670821 0.0010019171 0.0003316637 0.0001344002</span></span></code></pre></div>
 <p>The package provides a <code>confint</code> method for the fitted
 value. The method returns both a Wald confidence interval and profile
 likelihood interval. The Wald interval takes the usual the form where
@@ -486,24 +486,24 @@ end-points of the interval that satisfies <span class="math display">\[
 is value of the log-likelihood given shape parameter <span class="math inline">\(s\)</span>. The two intervals are returned as
 elements of a <code>list</code> named <code>wald</code> and
 <code>prof</code> respectively.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ci <span class="ot">=</span> <span class="fu">confint</span>(fit)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ci<span class="sc">$</span>wald</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     2.5%    97.5% </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3.490761 4.418099</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>ci<span class="sc">$</span>prof</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     2.5%    97.5% </span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3.520495 4.451277</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>ci <span class="ot">=</span> <span class="fu">confint</span>(fit)</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>ci<span class="sc">$</span>wald</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt;     2.5%    97.5% </span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt; 3.490761 4.418099</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>ci<span class="sc">$</span>prof</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt;     2.5%    97.5% </span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt; 3.520495 4.451277</span></span></code></pre></div>
 <p>You will notice that neither of these intervals contain the value
 shown in the previous output. However, this simply because they are
 confidence intervals on <span class="math inline">\(s^\prime\)</span>
 and not <span class="math inline">\(s\)</span>. This can be remedied by
 adding one to each interval:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ci<span class="sc">$</span>wald <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     2.5%    97.5% </span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4.490761 5.418099</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ci<span class="sc">$</span>prof <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;     2.5%    97.5% </span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4.520495 5.451277</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>ci<span class="sc">$</span>wald <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt;     2.5%    97.5% </span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="co">#&gt; 4.490761 5.418099</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>ci<span class="sc">$</span>prof <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co">#&gt;     2.5%    97.5% </span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co">#&gt; 4.520495 5.451277</span></span></code></pre></div>
 <p>The reason for not <em>correcting</em> these intervals is that the
 method mostly exists to feed into other parts of the package, especially
 the <code>plot</code> method.</p>
