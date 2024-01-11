@@ -6,7 +6,7 @@
 #'   \eqn{\Pr(X = x)}{Pr(X = x)}.
 
 #' @param interval either \code{"none"}, \code{"prof"}, or \code{"wald"} and can
-#'   be abbreviated. If \code{"prof"} or \code{"wald"} AND the Zeta model has
+#'   be abbreviated. If \code{"prof"} or \code{"wald"} AND the zeta model has
 #'   been used  then an interval, based on the bounds of a 100 * \code{level}
 #'   confidence interval for the shape parameter, is given for each predicted
 #'   probability. The interval is provided based on either a Profile Likelihood,
@@ -49,10 +49,10 @@ predict.psFit = function(object, newdata, interval = c("none", "prof", "wald"),
   }
 
   if(is.null(predicted)){
-    if(!object$zeroInflated){
+    if(object$model == "zeta"){
       predicted = VGAM::dzeta(newdata + ifelse(object$psData$type == "P", 1, 0),
                               shape = object$shape)
-    }else{
+    }else if(object$model == "ziz"){
       predicted = (1 - object$pi) * VGAM::dzeta(newdata + ifelse(object$psData$type == "P", 1, 0),
                                                 shape = object$shape)
       if(object$psData$type == "P"){
@@ -60,11 +60,13 @@ predict.psFit = function(object, newdata, interval = c("none", "prof", "wald"),
       }else{
         predicted[newdata == 1] = predicted[newdata == 1] + pi
       }
+    }else{
+      cat("This method is not currently implemented for the logarithmic distribution\n")
     }
   }
 
   if(interval %in% c("prof", "wald")){
-    if(!object$zeroInflated){
+    if(object$model == "zeta"){
       if(level <= 0.75 || level >= 1){
         stop("Level should be in the interval [0.75, 1)")
       }

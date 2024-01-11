@@ -3,8 +3,8 @@
 #' @param x an object of class \code{psFit}, usually from \code{\link{fitDist}}
 #' or \code{\link{fitZIDist}}.
 #' @param ylim the limits of the y-axis.
-#' @param conf if \code{TRUE}, and the model is the the Zeta model (as opposed
-#' to the Zero-Inflated Zeta (ZIZ), then confidence intervals (based on the standard
+#' @param conf if \code{TRUE}, and the model is the the zeta model (as opposed
+#' to the zero-inflated zeta (ZIZ), then confidence intervals (based on the standard
 #'   error of the shape parameter) are drawn on the plot. If the ZIZ model has
 #'   been used, then this is ignored.
 #' @param conf.level the confidence level for the confidence intervals. Must be
@@ -54,6 +54,7 @@ plot.psFit = function(x, ylim = c(0, 1), conf = FALSE, conf.level = 0.95,
                 ylab = "Probability",
                 xlab = "n",
                 main = if(x$psData$type == 'P'){"P terms"}else{"S terms"},
+                ylim = ylim,
                 ...)
 
     phat = x$psData$data$rn / sum(x$psData$data$rn)
@@ -65,7 +66,7 @@ plot.psFit = function(x, ylim = c(0, 1), conf = FALSE, conf.level = 0.95,
     legend("topright", pch = 'X', legend = "Observed", bty = "n")
     box()
 
-    if(conf && !x$zeroInflated){
+    if(conf && x$model == "zeta"){
       ci.type = match.arg(ci.type)
 
       if(conf.level < 0.75 || conf.level > 0.99){
@@ -99,7 +100,7 @@ plot.psFit = function(x, ylim = c(0, 1), conf = FALSE, conf.level = 0.95,
     legend("topright", pch = 'X', legend = "Observed", bty = "n")
     box()
 
-    if(conf && !x$zeroInflated){
+    if(conf && x$model == "zeta"){
       ci.type = match.arg(ci.type)
 
       if(conf.level < 0.75 || conf.level > 0.99){

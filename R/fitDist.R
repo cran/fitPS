@@ -1,7 +1,7 @@
 #' Fit a Zeta Distribution to Forensic Data
 #'
 #' This function uses maximum likelihood estimation (MLE) to estimate the shape
-#' parameter of  a Zeta distribution from a set of observed counts for either
+#' parameter of  a zeta distribution from a set of observed counts for either
 #' the number of groups/sources of forensically interesting material (mostly
 #' glass or paint) recovered from clothing, or the number of fragments/particles
 #' in each group. This, in turn, allows the estimation of the P and S
@@ -11,7 +11,7 @@
 #' Coulson et al. (2001), although poor typesetting, and a lack of definition of
 #' terms makes it hard to see. This package improves on the estimation in that
 #' linear interpolation is not required, and standard numerical optimisation is
-#' used instead. The Zeta distribution has probability mass function \deqn{p(k)
+#' used instead. The zeta distribution has probability mass function \deqn{p(k)
 #' = \frac{k^{-s}}{\zeta(s)}}{p(k) = k^-s/zeta(s)} where \eqn{\zeta(s)}{zeta(s)}
 #' is the Reimann Zeta function. Coulson et al. (2001) did not have an easy way
 #' to rapidly compute this quantity, hence their use of linear interpolation.
@@ -20,14 +20,14 @@
 #'
 #' @details The function returns an object of class \code{psFit} which is a
 #'   \code{list} contains four elements:
-#' \itemize{
+#' \describe{
 #' \item{\code{psData}}{ -- an object of class \code{psData}--see \code{\link{readData}},}
 #' \item{\code{fit}}{ -- the fitted object from \code{\link[stats]{optim}},}
 #' \item{\code{shape}}{ -- the maximum likelihood estimate of the shape parameter,}
 #' \item{\code{var.shape}}{ - the maximum likelihood estimate of the shape parameter,}
 #' \item{\code{fitted}}{ - a named \code{vector} containing the first \code{nterms of
 #' the fitted distribution.}}
-#' \item{\code{zeroInflated}}{ - set to \code{FALSE} for this model}
+#' \item{\code{model}}{ - set to \code{"zeta"} for this model}
 #' }.
 #' The output can be used in a variety of ways. If the interest is just in the
 #' shape parameter estimate, then the \code{shape} member of the \code{psFit}
@@ -150,7 +150,7 @@ fitDist = function(x, nterms = 10,
     shape = shape,
     var.shape = var.shape,
     fitted = fitted,
-    zeroInflated = FALSE
+    model = "zeta"
   )
 
   class(result) = "psFit"

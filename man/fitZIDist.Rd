@@ -28,14 +28,14 @@ an object of class \code{psFit}--see Details.
 }
 \description{
 This function uses maximum likelihood estimation (MLE) to estimate mixing
-parameter and the shape parameter of a Zero-Infalted Zeta distribution from a
+parameter and the shape parameter of a zero-inflated zeta distribution from a
 set of observed counts for either the number of groups/sources of
 forensically interesting material (mostly glass or paint) recovered from
 clothing, or the number of fragments/particles in each group. This, in turn,
 allows the estimation of the P and S probabilities, as described by Evett and
 Buckleton (1990), which used in computing the likelihood ratio (LR) for
 activity level propositions. The data itself arises from clothing surveys.
-The Zero-Inflated Zeta distribution has probability mass function
+The zero-inflated zeta distribution has probability mass function
 \deqn{p(k) = \begin{cases}
 \pi + \frac{(1-\pi)}{\zeta(s)}&,k=0, \\
 \frac{(1-\pi)k^{-s}}{\zeta(s)}&,k=1,2,\ldots
@@ -48,7 +48,7 @@ where \eqn{\zeta(s)}{zeta(s)} is the Reimann Zeta function.
 \details{
 The function returns an object of class \code{psFit} which is a
   \code{list} contains seven elements:
-\itemize{
+\describe{
 \item{\code{psData}}{ -- an object of class \code{psData}--see \code{\link{readData}},}
 \item{\code{fit}}{ -- the fitted object from \code{\link[stats]{optim}},}
 \item{\code{pi}}{ - the maximum likelihood estimate of the mixing parameter,}
@@ -56,7 +56,7 @@ The function returns an object of class \code{psFit} which is a
 \item{\code{var.cov}}{ -- the estimated variance-covariance matrix for the parameters,}
 \item{\code{fitted}}{ -- a named \code{vector} containing the first \code{nterms of
 the fitted distribution.}}
-\item{\code{zeroInflated}}{ -- set to \code{TRUE} for this model.}
+\item{\code{model}}{ -- set to \code{"ziz"} for this model.}
 }
 
 The output can be used in a variety of ways. If the interest is just in the
@@ -68,7 +68,7 @@ using the plot method \code{\link{plot.psFit}}, and to create a probability
 function with \code{\link{probfun}}. **NOTE** The value of the shape
 parameter that is printed (if you print the fitted object) is different
 from that value that is stored in \code{shape}. The stored value is for the
-\pkg{VGAM} parameterisation of the Zeta distribution which uses
+\pkg{VGAM} parameterisation of the zeta distribution which uses
 \eqn{s^\prime = s - 1}{s' = s - 1}. Therefore the printed value is \eqn{s =
 s^\prime + 1}{s = s' + 1}. If you intend to use the fitted value with
 \code{\link[VGAM]{dzeta}}, then you should use the stored value
