@@ -5,9 +5,23 @@
 \alias{fitdist}
 \title{Fit a Zeta Distribution to Forensic Data}
 \usage{
-fitDist(x, nterms = 10, start = 1, ...)
+fitDist(
+  x,
+  nterms = 10,
+  method = c("mle", "bayes", "integrate", "numerical", "mcmc", "laplace", "importance"),
+  prior,
+  bayesOptions = NULL,
+  ...
+)
 
-fitdist(x, nterms = 10, start = 1, ...)
+fitdist(
+  x,
+  nterms = 10,
+  method = c("mle", "bayes", "integrate", "numerical", "mcmc", "laplace", "importance"),
+  prior,
+  bayesOptions = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{an object of type \code{psData}, usually obtained from
@@ -16,71 +30,120 @@ fitdist(x, nterms = 10, start = 1, ...)
 \item{nterms}{the number of terms to compute the probability distribution
 for.}
 
-\item{start}{a starting value for the optimiser.}
+\item{method}{primary fitting method. Use \code{"mle"} for maximum
+likelihood estimation or \code{"bayes"} for Bayesian estimation. Legacy
+Bayesian aliases \code{"integrate"}, \code{"numerical"}, and
+\code{"mcmc"} are accepted with a deprecation warning and translated to
+\code{method = "bayes"} with the corresponding
+\code{bayesOptions$posteriorMethod}.}
 
-\item{...}{other parameters - not currently used.}
+\item{prior}{optional prior object used by the Bayesian methods. This is
+retained for backward compatibility. New code should usually pass priors
+through \code{bayesOptions}. If omitted, \code{makePrior()} is used.}
+
+\item{bayesOptions}{optional list controlling Bayesian fitting. The
+\code{posteriorMethod} element selects \code{"numerical"},
+\code{"mcmc"}, \code{"laplace"}, or \code{"importance"}. The
+default is \code{"numerical"}. The \code{prior} element may contain
+a prior object returned by \code{makePrior()}.}
+
+\item{...}{other arguments that control the estimation methods. If
+  \code{method == "mle"}, then the user can provide an optional argument
+  \code{start} which is the starting value for the numerical optimisation. If
+  this is not provided, then \code{start = 1} by default. If you specify your
+  own starting value, it must satisfy \code{shape > 1}.
+
+  If \code{method == "bayes"}, then there are five optional parameters (which,
+  despite the documentation, are actually case-insensitive):
+\describe{
+ \item{\code{shape0}}{ -- The initial value of the shape parameter. The default is 2.}
+ \item{\code{a}}{ -- The lower bound for the default uniform prior on \eqn{\log(\mathrm{shape} - 1)}{log(shape - 1)}. The default is -2.}
+ \item{\code{b}}{ -- The upper bound for the default uniform prior on \eqn{\log(\mathrm{shape} - 1)}{log(shape - 1)}. The default is +2.}
+ \item{\code{nIter}}{ -- The number of samples to save from the chain. Must be greater than zero, and ideally greater than 1000.}
+ \item{\code{nBurnIn}}{ -- The number of samples to discard from the chain. Must be greater than zero. **NOTE**: the sampler runs for \code{nIter + nBurnIn} iterations,
+ so you do not need to factor this number into your number of samples, \code{nIter}.}
+ \item{\code{silent}}{ -- A logical variable which allows the user to get a progress bar if they want. \code{TRUE} by default.}
+}}
 }
 \value{
 an object of class \code{psFit}--see Details.
 }
 \description{
-This function uses maximum likelihood estimation (MLE) to estimate the shape
-parameter of  a zeta distribution from a set of observed counts for either
-the number of groups/sources of forensically interesting material (mostly
-glass or paint) recovered from clothing, or the number of fragments/particles
-in each group. This, in turn, allows the estimation of the P and S
-probabilities, as described by Evett and Buckleton (1990), which used in
-computing the likelihood ratio (LR) for activity level propositions. The data
-itself arises from clothing surveys. The general method is described in
-Coulson et al. (2001), although poor typesetting, and a lack of definition of
-terms makes it hard to see. This package improves on the estimation in that
-linear interpolation is not required, and standard numerical optimisation is
-used instead. The zeta distribution has probability mass function \deqn{p(k)
-= \frac{k^{-s}}{\zeta(s)}}{p(k) = k^-s/zeta(s)} where \eqn{\zeta(s)}{zeta(s)}
-is the Reimann Zeta function. Coulson et al. (2001) did not have an easy way
+This function uses maximum likelihood estimation (MLE), or Bayesian
+estimation (MCMC), to estimate the shape parameter of a zeta distribution
+from a set of observed counts for either the number of groups/sources of
+forensically interesting material (mostly glass or paint) recovered from
+clothing, or the number of fragments/particles in each group. This, in turn,
+allows the estimation of the P and S probabilities, as described by Evett and
+Buckleton (1990), which are used in computing the likelihood ratio (LR) for
+activity level propositions. The data arise from clothing surveys.
+The general method is described in Coulson et al. (2001), although poor
+typesetting and a lack of defined terms make it hard to follow. This
+package improves on the estimation in that linear interpolation is not
+required, and standard numerical optimisation is used instead. The zeta
+distribution has probability mass function \deqn{p(k) =
+\frac{k^{-s}}{\zeta(s)}}{p(k) = k^-s/zeta(s)} where \eqn{\zeta(s)}{zeta(s)}
+is the Riemann zeta function. Coulson et al. (2001) did not have an easy way
 to rapidly compute this quantity, hence their use of linear interpolation.
 }
 \details{
 The function returns an object of class \code{psFit} which is a
-  \code{list} contains four elements:
+  \code{list} containing seven or eight elements:
 \describe{
 \item{\code{psData}}{ -- an object of class \code{psData}--see \code{\link{readData}},}
 \item{\code{fit}}{ -- the fitted object from \code{\link[stats]{optim}},}
-\item{\code{shape}}{ -- the maximum likelihood estimate of the shape parameter,}
-\item{\code{var.shape}}{ - the maximum likelihood estimate of the shape parameter,}
-\item{\code{fitted}}{ - a named \code{vector} containing the first \code{nterms of
-the fitted distribution.}}
-\item{\code{model}}{ - set to \code{"zeta"} for this model}
-}.
-The output can be used in a variety of ways. If the interest is just in the
-shape parameter estimate, then the \code{shape} member of the \code{psFit}
-object contains this information. It is also displayed along with a number
-of fitted probabilities by the \code{\link{print.psFit}} method. The fitted
-object can also be plotted using the plot method \code{\link{plot.psFit}},
-and to create a probability function with \code{\link{probfun}}. **NOTE**
-The value of the shape parameter that is printed (if you print the fitted
-object) is different from that value that is stored in \code{shape}. The
-stored value is for the \pkg{VGAM} parameterisation of the Zeta
-distribution which uses \eqn{s^\prime = s - 1}{s' = s - 1}. Therefore the
-printed value is \eqn{s = s^\prime + 1}{s = s' + 1}. If you intend to use
-the fitted value with \code{\link[VGAM]{dzeta}}, then you should use the
-stored value \eqn{s^\prime}{s'}.
+\item{\code{shape}}{ -- the maximum likelihood estimate, or the posterior mean, of the shape parameter,}
+\item{\code{var.shape}}{ -- the maximum likelihood estimate, or posterior estimate, of the variance of the shape parameter,}
+\item{\code{fitted}}{ -- a named \code{vector} containing the first \code{nterms} of
+the fitted distribution.}
+\item{\code{model}}{ -- set to \code{"zeta"} for this model.}
+\item{\code{method}}{ -- the method of estimation used, either \code{"mle"} or \code{"bayes"}.}
+\item{\code{chain}}{ -- if \code{method == "bayes"}, then this element will contain the Markov Chain from the sampler,
+that is, hopefully a sample from the posterior density of the shape parameter. If \code{method == "mle"}, then this element does not exist.}
+}
+  The output can be used in a variety of ways. If the interest is just in the
+  shape parameter estimate, then the \code{shape} member of the \code{psFit}
+  object contains this information. It is also displayed along with a number
+  of fitted probabilities by the \code{\link{print.psFit}} method. The fitted
+  object can also be plotted using the plot method \code{\link{plot.psFit}},
+  and to create a probability function with \code{\link{probfun}}. The
+  \code{shape} value stored in the fitted object is the zeta distribution
+  shape parameter and must satisfy \code{shape > 1}.
 
-If \code{start} is not specified, then it is chosen randomly from (0.5, 1).
-The reason the lower value is not zero is that small starting values seem
-to cause instability in the likelihood. If you specify your own starting
-value, it would be sensible to keep it above 0.5.
+  This function implements both maximum likelihood estimation (MLE) and
+  Bayesian estimation. Both modes of estimation require additional information
+  such as starting values and parameters for priors. Please read the
+  documentation for the \code{...} argument closely because it explains what
+  you can change and what the default values are.
+
+  Currently the Bayesian estimation is done using the prior returned by
+  \code{\link{makePrior}}. By default this is a Uniform[a, b] prior on
+  \eqn{\log(\mathrm{shape} - 1)}{log(shape - 1)}, so the prior support always has \code{shape > 1}. This may become more
+  flexible in the future. Similarly, the estimation is done using a simple
+  Metropolis-Hastings sampler. It might be more efficient to sample through
+  adaptive rejection sampling, but it is unclear whether it is worth the
+  effort.
 }
 \section{Functions}{
 \itemize{
 \item \code{fitdist()}: Fit a Zeta Distribution to Forensic Data
-export
 
 }}
 \examples{
 p = readData(system.file("extdata", "p.xlsx", package = "fitPS"))
 fit = fitDist(p)
 fit
+
+## Compare to the Bayesian estimates
+fit2 = fitDist(p, method = "bayes")
+fit2
+
+fit3 = fitDist(
+  p,
+  method = "bayes",
+  bayesOptions = list(posteriorMethod = "numerical")
+)
+fit3
 }
 \references{
 Coulson, S. A., Buckleton, J. S., Gummer, A. B., and Triggs,
